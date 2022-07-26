@@ -52,5 +52,5 @@
   "devDependencies": {},
   "browser": {
     "crypto": false
-}
+  }
 }

@@ -42,10 +42,10 @@ app.get('/express_backend', (req, res) => { //Line 9
   api.transactional.sendSmartEmail(details, function (err, res) {
       if (err) {
           /*do something*/
-          console.log("ERROR")
+          alert("ERROR")
       } else {
           /*do something*/
-          console.log("YOU DID IT")
+          alert("YOU DID IT")
       }
   });
 }); 

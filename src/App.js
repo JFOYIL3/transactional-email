@@ -48,7 +48,14 @@ function App() {
 }
 
 function sendEmail(firstName, lastName, email, lastPlayed){
-  fetch(`http://localhost:5000/express_backend?firstName=${firstName}&lastName=${lastName}&email=${email}&lastPlayed=${lastPlayed}`);
+  fetch(`http://localhost:5000/express_backend?firstName=${firstName}&lastName=${lastName}&email=${email}&lastPlayed=${lastPlayed}`)
+    .then((res) => {
+      if (res.ok){
+        alert("IT WORKED");
+      }else{
+        alert("THERE WAS AN ERROR");
+      }
+    })
 }
 
 export default App;

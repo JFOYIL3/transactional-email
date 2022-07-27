@@ -15,6 +15,9 @@ app.get('/express_backend', (req, res) => { //Line 9
   // Authenticate with API Key
   var createsend = require('createsend-node');
   const dotenv = require("dotenv");
+  const date = require('date-and-time');
+  const now = new Date();
+  const value = date.subtract(now, new Date(req.query.lastPlayed));
 
   dotenv.config({ path: ".env" });
   var auth = { apiKey: process.env.APIKEY };
@@ -32,7 +35,7 @@ app.get('/express_backend', (req, res) => { //Line 9
 
   // Add mail merge variables
   details.data = {
-    "variableName": "variableNameTestValue"
+    "variableName": `IT'S BEEN ${parseInt(value.toDays())} DAYS SINCE YOU LAST PLAYED!`
   }
 
   // Send the smart email(and provide a callback function that takes an error and a response parameter)

@@ -1,16 +1,50 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const app = express();
 const cors = require('cors');
 const {createPool} = require('mysql');
 const port = process.env.PORT || 5000;
 
 app.use(cors());
+app.use(fileUpload());
+
+
+// Upload endpoint
+app.post('/upload', (req, res) => {
+  if(req.files === null){
+    return res.status(400).json({msg: 'No file uploaded'});
+  }
+  const file = req.files.file;
+  file.mv(`${__dirname}/uploads/${file.name}`, err => {
+    if(err){
+      console.error(err);
+      return res.status(500).send();
+    }
+    res.json({ fileName: file.name, filePath: `/uploads/${file.name}`});
+  })
+})
+
 
 // This displays message that the server running and listening to specified port
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
+
+app.post("/uploaded", (req, res) => {
+  setTimeout(() => {
+    console.log('File uploaded');
+    return res.status(200).json({resutl: true, msg: 'file-uploaded'});
+  }, 3000);
+});
+
+app.delete("/uploaded", (req, res) => {
+  console.log('File deleted');
+  return res.status(200).json({resutl: true, msg: 'file-deleted'});
+});
+
+
+
 // create a GET route
-app.get('/express_backend', (req, res) => { //Line 9
+app.get('/express_backend', (req, res) => { 
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 
   // Authenticate with API Key

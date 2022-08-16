@@ -5,7 +5,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import List from './components/Pages/List';
+import ListTest from './components/Pages/ListTest';
+import Test from './components/Test'
 import 'bootstrap/dist/css/bootstrap.css'
+
 
 function App() {
   return (
@@ -16,7 +19,7 @@ function App() {
 
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/list' element={<List />} />
+        <Route path='/list' element={<ListTest />} />
       </Routes>
     </Router>
   );

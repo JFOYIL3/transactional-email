@@ -38,7 +38,11 @@
 }
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 600px;
+  overflow-y:auto;
+  height: 400px;
+  display:block;
+  font-size: 70%
 }
 th, td {
   padding: 0.25rem;
@@ -47,4 +51,10 @@ th, td {
 }
 tbody tr:nth-child(odd) {
   background: #eee;
+}
+.head {
+  font-family: arial;
+  font-size: 24px;
+  margin: 25px;
+  text-align: center;
 }

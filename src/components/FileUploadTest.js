@@ -1,6 +1,8 @@
 import React, {Fragment, useState}from 'react'
 import axios from 'axios'
 import Papa from 'papaparse';
+import Col from "react-bootstrap/Col";
+import CreateList from './CreateList';
 
 const fs = require('fs');
 const { parse } = require('csv-parse');
@@ -8,8 +10,12 @@ const { parse } = require('csv-parse');
 
 const allowedExtensions = ['csv'];
 
+
+
+
 const FileUploadTest = () => {
 
+    const [viewed, setViewed] = useState(false);
     const [data, setData] = useState([]);
 
     // Uploading the file
@@ -21,6 +27,12 @@ const FileUploadTest = () => {
     const [parsedData, setParsedData] = useState([]);
     const [tableRows, setTableRows] = useState([]);
     const [values, setValues] = useState([]);
+
+    
+
+
+    
+
 
     const onChange = e => {
         // this is an array, since we
@@ -59,7 +71,9 @@ const FileUploadTest = () => {
 
     // View the data as a table
     const viewData = e =>{
+        
         if(uploadedFile.filePath){
+            setViewed(true);
             console.log(uploadedFile.filePath);
             Papa.parse(file, {
                 header: true,
@@ -90,42 +104,63 @@ const FileUploadTest = () => {
         
     }
 
+    const createList = e =>{
+        console.log("CREATING LIST")
+    }
+
+
+    
+
     return (
-        <Fragment>
-            <form onSubmit={onSubmit}>
-                <div className="custom-file mb-4">
-                    <input type="file" className="custom-file-input" id="customFile" onChange={onChange}/>
-                    <label className="custom-file-label" htmlFor="customFile">
-                        {fileName}
-                    </label>
-                </div>
-                <input type="submit" value="Upload" className='btn btn-primary btn-block mt-4'></input>
-            </form>
-            <button value='View Data' className='btn btn-secondary btn-block mt-4' onClick={viewData}>View Data</button>
-            <h1>{parsedData.length > 0 ? `Number of entries: ${parsedData.length}` : ''}</h1>
-            <table>
-                <thead>
-                    <tr>
-                        {tableRows.map((rows, index) => {
-                            return <th key={index}>{rows}</th>;
-                        })}
-                    </tr>
-                </thead>
-                <tbody>
-                    {values.map((value, index) => {
-                        return (
-                            <tr key={index}>
-                            {value.map((val, i) => {
-                                return <td key={i}>{val}</td>;
-                            })}
+        
+            <Fragment>
+                <Col>
+                <form onSubmit={onSubmit}>
+                    <div className="custom-file mb-4">
+                        <input type="file" className="custom-file-input" id="customFile" onChange={onChange}/>
+                        <label className="custom-file-label" htmlFor="customFile">
+                            {fileName}
+                        </label>
+                    </div>
+                    <input type="submit" value="Upload" className='btn btn-primary btn-block mt-4'></input>
+                </form>
+                <button value='View Data' className='btn btn-secondary btn-block mt-4' onClick={viewData}>View Data</button>
+                <h1 className='mb-4'>{parsedData.length > 0 ? `Number of entries: ${parsedData.length}` : ''}</h1>
+                <div id='data'>
+                    <table id='csv-data'>
+                        <thead>
+                            <tr>
+                                {tableRows.map((rows, index) => {
+                                    return <th key={index}>{rows}</th>;
+                                })}
                             </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-            
-        </Fragment>
+                        </thead>
+                        <tbody>
+                            {values.map((value, index) => {
+                                return (
+                                    <tr key={index}>
+                                    {value.map((val, i) => {
+                                        return <td key={i}>{val}</td>;
+                                    })}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+                {/*<button id='theid' onClick={createList} className='btn btn-primary btn-block mt-4'>Create List</button>*/}
+                </Col>
+                <Col>
+                    {viewed && <CreateList fieldOptions={tableRows}/>}
+                    {/*<CreateList />*/}
+                </Col>
+            </Fragment>
+        
+              
+        
     )
 }
+
+
 
 export default FileUploadTest

@@ -41,6 +41,10 @@ app.delete("/uploaded", (req, res) => {
   return res.status(200).json({resutl: true, msg: 'file-deleted'});
 });
 
+app.get('/create_list', (req, res) => {
+  res.send({ express: req.query.fieldOptions });
+});
+
 
 
 // create a GET route

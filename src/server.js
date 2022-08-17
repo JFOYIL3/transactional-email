@@ -3,6 +3,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const cors = require('cors');
 const {createPool} = require('mysql');
+const { default: axios } = require('axios');
 const port = process.env.PORT || 5000;
 
 app.use(cors());
@@ -41,8 +42,9 @@ app.delete("/uploaded", (req, res) => {
   return res.status(200).json({resutl: true, msg: 'file-deleted'});
 });
 
+// create a new list
 app.get('/create_list', (req, res) => {
-  res.send({ express: req.query.fieldOptions });
+  //axios.post(`https://api.createsend.com/api/v3.3/lists/{clientid}.{xml|json}`)
 });
 
 

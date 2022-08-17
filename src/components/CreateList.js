@@ -4,9 +4,9 @@ import {test} from "./FileUploadTest"
 
 const CreateList = ({fieldOptions}) => {
     
-    console.log(fieldOptions)
+    console.log("test ", fieldOptions)
     
-    var selectedFields = [];
+    //const [selectedFields]
 
     function handleChange(){
         //if name is not in selectedFields, add it

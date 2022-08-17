@@ -37,6 +37,7 @@ const Navbar = () => {
                     <div className='navbar-nav fs-5'>
                         <NavLink activeclassname='active' to='/' className="nav-link">Transactional</NavLink>
                         <NavLink activeclassname='active' to='/list' className="nav-link">List</NavLink>
+                        <NavLink activeclassname='active' to='/count' className="nav-link">Counter test</NavLink>
                         
                     </div> 
                 </div>

@@ -8,6 +8,7 @@ import List from './components/Pages/List';
 import ListTest from './components/Pages/ListTest';
 import Test from './components/Test'
 import 'bootstrap/dist/css/bootstrap.css'
+import CountTest from './components/Pages/CountTest';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/list' element={<ListTest />} />
+        <Route path='/count' element={<CountTest />} />
       </Routes>
     </Router>
   );

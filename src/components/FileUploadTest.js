@@ -43,6 +43,7 @@ const FileUploadTest = () => {
     };
 
     const onSubmit = async e => {
+        
         e.preventDefault();
         const formData = new FormData();
         formData.append('file', file);
@@ -67,13 +68,7 @@ const FileUploadTest = () => {
                 console.log(err.response.data.msg);
             }
         }
-    };
-
-    // View the data as a table
-    const viewData = e =>{
         
-        if(uploadedFile.filePath){
-            setViewed(true);
             console.log(uploadedFile.filePath);
             Papa.parse(file, {
                 header: true,
@@ -93,14 +88,40 @@ const FileUploadTest = () => {
                     setValues(valuesArray);
 
                     console.log(results.data.length);
+                }
+            })
+            setViewed(true);
+        
+    };
 
+    // View the data as a table
+    const viewData = e =>{
+        
+        /*if(uploadedFile.filePath){
+            console.log(uploadedFile.filePath);
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results){
+                    //console.log(results.data);
+                    const rowsArray = [];
+                    const valuesArray = [];
 
+                    results.data.map((d) => {
+                        rowsArray.push(Object.keys(d));
+                        valuesArray.push(Object.values(d));
+                    });
 
+                    setParsedData(results.data);
+                    setTableRows(rowsArray[0]);
+                    setValues(valuesArray);
+
+                    console.log(results.data.length);
                 }
             })
         }else{
             alert("Error: There is no file uploaded!");
-        }
+        }*/
         
     }
 
@@ -124,7 +145,7 @@ const FileUploadTest = () => {
                     </div>
                     <input type="submit" value="Upload" className='btn btn-primary btn-block mt-4'></input>
                 </form>
-                <button value='View Data' className='btn btn-secondary btn-block mt-4' onClick={viewData}>View Data</button>
+                {/*<button value='View Data' className='btn btn-secondary btn-block mt-4' onClick={viewData}>View Data</button>*/}
                 <h1 className='mb-4'>{parsedData.length > 0 ? `Number of entries: ${parsedData.length}` : ''}</h1>
                 <div id='data'>
                     <table id='csv-data'>

@@ -45,6 +45,8 @@ app.delete("/uploaded", (req, res) => {
 // create a new list
 app.get('/create_list', (req, res) => {
   //axios.post(`https://api.createsend.com/api/v3.3/lists/{clientid}.{xml|json}`)
+  res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
+  console.log(req.query.fieldOptions)
 });
 
 

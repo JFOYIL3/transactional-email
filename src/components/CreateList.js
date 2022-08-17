@@ -1,10 +1,13 @@
-import { render } from '@testing-library/react'
 import React from 'react'
-import {test} from "./FileUploadTest"
+import {useDispatch, useSelector} from 'react-redux'
+import {addElement, deleteElement} from '../redux/fields.js'
 
 const CreateList = ({fieldOptions}) => {
+
+    const dispatch = useDispatch();
+    const {fields} = useSelector(state => state.fields)
     
-    console.log("test ", fieldOptions)
+   
     
     //const [selectedFields]
 
@@ -15,7 +18,7 @@ const CreateList = ({fieldOptions}) => {
     }
     
     function createList(fieldOptions){
-        fetch(`http://localhost:5000/create_list?fieldOptions=${fieldOptions}`)
+        fetch(`http://localhost:5000/create_list?fieldOptions=${fields}`)
             .then((res) => {
                 if (res.ok){
                     alert("IT WORKED");
@@ -23,6 +26,7 @@ const CreateList = ({fieldOptions}) => {
                     alert("THERE WAS AN ERROR");
                 }
             })
+        console.log(fields)
     }
     
     return (
@@ -36,7 +40,17 @@ const CreateList = ({fieldOptions}) => {
             {fieldOptions.map((rows, index) => {
                                     return (
                                         <h3 key={index}>
-                                            <input type="checkbox" checked={true}/>
+                                            <input type="checkbox" id={String(index)} onClick={() => {
+                                                    var test = document.getElementById(String(index))
+                                                    if(test.checked){
+                                                        dispatch(addElement(fieldOptions[index]))
+                                                    }else{
+                                                        dispatch(deleteElement(fieldOptions[index]))
+                                                    }
+                                                    
+                                                    
+                                                    
+                                                }}/>
                                             {rows}
                                         </h3>
                                     );

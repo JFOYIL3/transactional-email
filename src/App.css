@@ -38,7 +38,7 @@
 }
 .table-responsive-xl {
   border-collapse: collapse;
-  width: 600px;
+  max-width: 600px;
   overflow-y:auto;
   height: 400px;
   display:block;

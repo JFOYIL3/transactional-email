@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
-import { parse } from 'papaparse'
+
 import FileUploadTest from '../FileUploadTest';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
-import CreateList from '../CreateList';
+
 
 const ListTest = () => {
     return (

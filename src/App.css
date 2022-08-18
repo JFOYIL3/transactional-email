@@ -36,7 +36,7 @@
     transform: rotate(360deg);
   }
 }
-table {
+.table-responsive-xl {
   border-collapse: collapse;
   width: 600px;
   overflow-y:auto;

@@ -147,8 +147,9 @@ const FileUploadTest = () => {
                 </form>
                 {/*<button value='View Data' className='btn btn-secondary btn-block mt-4' onClick={viewData}>View Data</button>*/}
                 <h1 className='mb-4'>{parsedData.length > 0 ? `Number of entries: ${parsedData.length}` : ''}</h1>
-                <div id='data'>
-                    <table id='csv-data'>
+                <div id='data' className='table-responsive-xl'>
+                    <table id='csv-data' className='table'>
+
                         <thead>
                             <tr>
                                 {tableRows.map((rows, index) => {

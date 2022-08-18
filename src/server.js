@@ -44,9 +44,90 @@ app.delete("/uploaded", (req, res) => {
 
 // create a new list
 app.get('/create_list', (req, res) => {
-  //axios.post(`https://api.createsend.com/api/v3.3/lists/{clientid}.{xml|json}`)
-  res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
-  console.log(req.query.fieldOptions)
+  /*var createsend = require('createsend-node');
+  const dotenv = require("dotenv");
+  dotenv.config({ path: ".env" });
+  var auth = { apiKey: process.env.APIKEY };
+  
+  var api = new createsend(auth);
+  console.log(api)
+  //api.get(`https://api.createsend.com/api/v3.3/clients.json/${process.env.CLIENT_ID}`)
+  var details = {
+    "Title": "jeff test",
+    "UnsubscribePage": "http://www.example.com/unsubscribed.html",
+    "UnsubscribeSetting": "OnlyThisList",
+    "ConfirmedOptIn": false,
+    "ConfirmationSuccessPage": "http://www.example.com/joined.html"
+  }
+  api.post(`https://api.createsend.com/api/v3.3/lists/${process.env.CLIENT_ID}.json`)*/
+  
+  const dotenv = require("dotenv");
+  dotenv.config({ path: ".env" });
+  var auth = { apiKey: process.env.APIKEY };
+
+  var axios = require('axios');
+  var data = JSON.stringify({
+    "Title": "API test",
+    "UnsubscribePage": "http://www.example.com/unsubscribed.html",
+    "UnsubscribeSetting": "OnlyThisList",
+    "ConfirmedOptIn": false,
+    "ConfirmationSuccessPage": "http://www.example.com/joined.html"
+  });
+
+  var config = {
+    method: 'post',
+    url: `https://api.createsend.com/api/v3.3/lists/${process.env.CLIENT_ID}.json`,
+    headers: { 
+      'Authorization': 'Basic ' + process.env.APIKEY, 
+      'Content-Type': 'application/json'
+    },
+    data : data
+  };
+
+  console.log(config.headers)
+
+  axios(config)
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+  
+  
+
+
+  /*console.log(req.query.fieldOptions)
+  axios.get(`https://api.createsend.com/api/v3.3/clients.json`)
+  .then(res => {
+    console.log(res.data)
+  })
+  .catch((err) =>{
+    console.log(err)
+  })*/
+
+
+
+  /*var details = {
+    "Title": "jeff test",
+    "UnsubscribePage": "http://www.example.com/unsubscribed.html",
+    "UnsubscribeSetting": "AllClientLists",
+    "ConfirmedOptIn": false,
+    "ConfirmationSuccessPage": "http://www.example.com/joined.html"
+  }
+  axios.post(`https://api.createsend.com/api/v3.3/lists/${process.env.CLIENT_ID}.${details}`)
+  .then(res => {
+    console.log(res)
+    console.log(res.data)
+  })
+  .catch((err) =>{
+    console.log(err)
+    console.log("ERROR")
+  })*/
+  
+  
+  
 });
 
 

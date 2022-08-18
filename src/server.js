@@ -1,3 +1,5 @@
+
+
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
@@ -5,6 +7,7 @@ const cors = require('cors');
 const {createPool} = require('mysql');
 const { default: axios } = require('axios');
 const port = process.env.PORT || 5000;
+
 
 app.use(cors());
 app.use(fileUpload());
@@ -44,6 +47,7 @@ app.delete("/uploaded", (req, res) => {
 
 // create a new list
 app.get('/create_list', (req, res) => {
+  res.send({ express: 'I WANT TO CREATE A LIST DAMMIT' });
   /*var createsend = require('createsend-node');
   const dotenv = require("dotenv");
   dotenv.config({ path: ".env" });
@@ -65,9 +69,16 @@ app.get('/create_list', (req, res) => {
   dotenv.config({ path: ".env" });
   var auth = { apiKey: process.env.APIKEY };
 
+
+
+
+
+
+  // --------AXIOS--------------
+  const {Base64} = require('js-base64');
   var axios = require('axios');
   var data = JSON.stringify({
-    "Title": "API test",
+    "Title": "API test VSCode",
     "UnsubscribePage": "http://www.example.com/unsubscribed.html",
     "UnsubscribeSetting": "OnlyThisList",
     "ConfirmedOptIn": false,
@@ -78,13 +89,11 @@ app.get('/create_list', (req, res) => {
     method: 'post',
     url: `https://api.createsend.com/api/v3.3/lists/${process.env.CLIENT_ID}.json`,
     headers: { 
-      'Authorization': 'Basic ' + process.env.APIKEY, 
-      'Content-Type': 'application/json'
+      "Authorization": "Basic " + Base64.encode(auth.apiKey), 
+      "Content-Type": "application/json"
     },
     data : data
   };
-
-  console.log(config.headers)
 
   axios(config)
   .then(function (response) {
@@ -94,37 +103,18 @@ app.get('/create_list', (req, res) => {
     console.log(error);
   });
 
+
+  
+
   
   
 
 
-  /*console.log(req.query.fieldOptions)
-  axios.get(`https://api.createsend.com/api/v3.3/clients.json`)
-  .then(res => {
-    console.log(res.data)
-  })
-  .catch((err) =>{
-    console.log(err)
-  })*/
+  
 
 
 
-  /*var details = {
-    "Title": "jeff test",
-    "UnsubscribePage": "http://www.example.com/unsubscribed.html",
-    "UnsubscribeSetting": "AllClientLists",
-    "ConfirmedOptIn": false,
-    "ConfirmationSuccessPage": "http://www.example.com/joined.html"
-  }
-  axios.post(`https://api.createsend.com/api/v3.3/lists/${process.env.CLIENT_ID}.${details}`)
-  .then(res => {
-    console.log(res)
-    console.log(res.data)
-  })
-  .catch((err) =>{
-    console.log(err)
-    console.log("ERROR")
-  })*/
+  
   
   
   

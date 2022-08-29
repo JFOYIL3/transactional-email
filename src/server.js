@@ -48,6 +48,7 @@ app.delete("/uploaded", (req, res) => {
 // create a new list
 app.get('/create_list', (req, res) => {
   res.send({ express: 'I WANT TO CREATE A LIST DAMMIT' });
+  console.log(typeof req.query.fieldOptions);
   /*var createsend = require('createsend-node');
   const dotenv = require("dotenv");
   dotenv.config({ path: ".env" });
@@ -78,7 +79,7 @@ app.get('/create_list', (req, res) => {
   const {Base64} = require('js-base64');
   var axios = require('axios');
   var data = JSON.stringify({
-    "Title": "API test VSCode",
+    "Title": req.query.title,
     "UnsubscribePage": "http://www.example.com/unsubscribed.html",
     "UnsubscribeSetting": "OnlyThisList",
     "ConfirmedOptIn": false,
@@ -98,6 +99,46 @@ app.get('/create_list', (req, res) => {
   axios(config)
   .then(function (response) {
     console.log(JSON.stringify(response.data));
+    var fieldData = [];
+    const fieldOptions = req.query.fieldOptions.split(",");
+    console.log(fieldOptions)
+    for(var i = 0; i < fieldOptions.length; i++){
+      fieldData.push({
+        "FieldName": fieldOptions[i],
+        "DataType": "Text",
+        "Options": [  ],
+        "VisibleInPreferenceCenter": true
+      })
+    }
+    
+    
+    
+
+    
+    
+    for(i = 0; i < fieldData.length; i++){
+      var config = {
+        method: 'post',
+        url: `https://api.createsend.com/api/v3.3/lists/${response.data}/customfields.json`,
+        headers: { 
+          "Authorization": "Basic " + Base64.encode(auth.apiKey), 
+          "Content-Type": "application/json"
+        },
+        data : fieldData[i]
+      };
+    
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data))
+      })
+      .catch(function (error){
+        console.log(error)
+      })
+    }
+    
+    
+    
+    //https://api.createsend.com/api/v3.3/lists/{listid}/customfields.{xml|json}
   })
   .catch(function (error) {
     console.log(error);

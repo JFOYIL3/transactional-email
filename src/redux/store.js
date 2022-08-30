@@ -3,11 +3,13 @@ import counter from './counter';
 import counterReducer from './counter'
 import headersReducer from './headers'
 import fieldsReducer from './fields'
+import datatypesReducer from './datatypes'
 
 export default configureStore({
     reducer: {
         counter: counterReducer, 
         headers: headersReducer,
-        fields: fieldsReducer
+        fields: fieldsReducer,
+        datatypes: datatypesReducer
     }
 });

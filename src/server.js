@@ -101,7 +101,8 @@ app.get('/create_list', (req, res) => {
     console.log(JSON.stringify(response.data));
     var fieldData = [];
     const fieldOptions = req.query.fieldOptions.split(",");
-    console.log(fieldOptions)
+    //console.log(fieldOptions)
+    console.log(req.query.dataTypes.data)
     for(var i = 0; i < fieldOptions.length; i++){
       fieldData.push({
         "FieldName": fieldOptions[i],

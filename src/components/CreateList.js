@@ -1,11 +1,15 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {addElement, deleteElement} from '../redux/fields.js'
+import {updateElement} from '../redux/datatypes.js'
 
 const CreateList = ({fieldOptions}) => {
 
     const dispatch = useDispatch();
     const {fields} = useSelector(state => state.fields)
+    const {datatypes} = useSelector(state => state.datatypes)
+
+    //var dataTypes = {};
     
    
     
@@ -17,7 +21,7 @@ const CreateList = ({fieldOptions}) => {
         console.log()
     }
     
-    function createList(fieldOptions){
+    function createList(){
         console.log(typeof fields);
         const title = document.getElementById("list-name").value;
         fetch(`http://localhost:5000/create_list?fieldOptions=${fields}&title=${title}`)
@@ -44,6 +48,13 @@ const CreateList = ({fieldOptions}) => {
             }
         }
     }
+
+    function test(){
+        console.log(datatypes)
+         
+    }
+
+    
     
     return (
         <div>
@@ -57,8 +68,7 @@ const CreateList = ({fieldOptions}) => {
             {fieldOptions.map((rows, index) => {
                                     return (
                                         <h3 key={index}>
-                                            
-                                            <input type="checkbox" id={String(index)} onClick={() => {
+                                            {rows.toLowerCase() === "name" || rows.toLowerCase() === "email address" ? <input type="checkbox" id={String(index)} checked/> : <input type="checkbox" id={String(index)} onClick={() => {
                                                     var test = document.getElementById(String(index))
 
                                                     if(test.checked){
@@ -69,10 +79,15 @@ const CreateList = ({fieldOptions}) => {
                                                     
                                                     
                                                     
-                                                }}/>
+                                                }}/>}
+                                            
                                             {rows.toLowerCase() === "name" || rows.toLowerCase() === "email address" ? <span style={{color: "#d4d4d4"}}>{rows}</span> : rows}
                                             {(rows.toLowerCase() !== "name" && rows.toLowerCase() !== "email address") && <div className='justify-content-right'>
-                                                <select id={String(index) + "-type"}>
+                                                <select id={String(rows) + "-type"} onChange={() =>{
+                                                    var e = document.getElementById(String(rows) + "-type");
+                                                    var text = e.options[e.selectedIndex].text;
+                                                    dispatch(updateElement([rows, text]))
+                                                }}>
                                                     <option value='text'>Text</option>
                                                     <option value='number'>Number</option>
                                                     <option value='date'>Date</option>
@@ -82,15 +97,19 @@ const CreateList = ({fieldOptions}) => {
                                                     <option value='us-states'>US States</option>
                                                 </select>
                                             </div>}
+                                            {(rows.toLowerCase() !== "name" && rows.toLowerCase() !== "email address") && <script>{
+                                                /*dispatch(updateElement([rows, "Text"]))*/
+                                            }</script>}
                                         </h3>
                                         
                                     );
                                 })}
             
             <button value='Create List' className='btn btn-secondary btn-block mt-4' onClick={createList}>Create List</button>
+            <button value='test' className='btn btn-secondary btn-block mt-4' onClick={test}>test</button>
            
             
-           
+        
         </div>
             
     )

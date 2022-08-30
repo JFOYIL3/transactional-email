@@ -24,7 +24,11 @@ const CreateList = ({fieldOptions}) => {
     function createList(){
         console.log(typeof fields);
         const title = document.getElementById("list-name").value;
-        fetch(`http://localhost:5000/create_list?fieldOptions=${fields}&title=${title}`)
+        fetch(`http://localhost:5000/create_list?fieldOptions=${fields}&title=${title}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datatypes)
+        })
             .then((res) => {
                 if (res.ok){
                     alert("IT WORKED");
@@ -51,7 +55,10 @@ const CreateList = ({fieldOptions}) => {
 
     function test(){
         console.log(datatypes)
-         
+    }
+
+    function test2(entry, data){
+        dispatch(updateElement([entry, data]))
     }
 
     
@@ -86,7 +93,8 @@ const CreateList = ({fieldOptions}) => {
                                                 <select id={String(rows) + "-type"} onChange={() =>{
                                                     var e = document.getElementById(String(rows) + "-type");
                                                     var text = e.options[e.selectedIndex].text;
-                                                    dispatch(updateElement([rows, text]))
+                                                    test2(rows, text);
+                                                    //dispatch(updateElement([rows, text]))
                                                 }}>
                                                     <option value='text'>Text</option>
                                                     <option value='number'>Number</option>
@@ -97,9 +105,9 @@ const CreateList = ({fieldOptions}) => {
                                                     <option value='us-states'>US States</option>
                                                 </select>
                                             </div>}
-                                            {(rows.toLowerCase() !== "name" && rows.toLowerCase() !== "email address") && <script>{
-                                                /*dispatch(updateElement([rows, "Text"]))*/
-                                            }</script>}
+                                            {(rows.toLowerCase() !== "name" && rows.toLowerCase() !== "email address") && <script>
+                                                {test2(rows, "Text")}
+                                            </script>}
                                         </h3>
                                         
                                     );

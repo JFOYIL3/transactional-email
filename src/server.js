@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
@@ -7,10 +5,15 @@ const cors = require('cors');
 const {createPool} = require('mysql');
 const { default: axios } = require('axios');
 const port = process.env.PORT || 5000;
+var bodyParser = require('body-parser')
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 
 app.use(cors());
 app.use(fileUpload());
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
 
 
 // Upload endpoint
@@ -46,7 +49,7 @@ app.delete("/uploaded", (req, res) => {
 });
 
 // create a new list
-app.get('/create_list', (req, res) => {
+app.post('/create_list',  (req, res) => {
   res.send({ express: 'I WANT TO CREATE A LIST DAMMIT' });
   console.log(typeof req.query.fieldOptions);
   /*var createsend = require('createsend-node');
@@ -102,7 +105,9 @@ app.get('/create_list', (req, res) => {
     var fieldData = [];
     const fieldOptions = req.query.fieldOptions.split(",");
     //console.log(fieldOptions)
-    console.log(req.query.dataTypes.data)
+    
+    console.log("THE BODY:", req.body);
+    
     for(var i = 0; i < fieldOptions.length; i++){
       fieldData.push({
         "FieldName": fieldOptions[i],

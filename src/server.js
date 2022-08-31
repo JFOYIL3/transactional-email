@@ -51,34 +51,14 @@ app.delete("/uploaded", (req, res) => {
 // create a new list
 app.post('/create_list',  (req, res) => {
   res.send({ express: 'I WANT TO CREATE A LIST DAMMIT' });
-  console.log(typeof req.query.fieldOptions);
-  /*var createsend = require('createsend-node');
-  const dotenv = require("dotenv");
-  dotenv.config({ path: ".env" });
-  var auth = { apiKey: process.env.APIKEY };
-  
-  var api = new createsend(auth);
-  console.log(api)
-  //api.get(`https://api.createsend.com/api/v3.3/clients.json/${process.env.CLIENT_ID}`)
-  var details = {
-    "Title": "jeff test",
-    "UnsubscribePage": "http://www.example.com/unsubscribed.html",
-    "UnsubscribeSetting": "OnlyThisList",
-    "ConfirmedOptIn": false,
-    "ConfirmationSuccessPage": "http://www.example.com/joined.html"
-  }
-  api.post(`https://api.createsend.com/api/v3.3/lists/${process.env.CLIENT_ID}.json`)*/
   
   const dotenv = require("dotenv");
   dotenv.config({ path: ".env" });
   var auth = { apiKey: process.env.APIKEY };
-
-
-
-
-
 
   // --------AXIOS--------------
+  // CREATE LIST
+
   const {Base64} = require('js-base64');
   var axios = require('axios');
   var data = JSON.stringify({
@@ -101,31 +81,37 @@ app.post('/create_list',  (req, res) => {
 
   axios(config)
   .then(function (response) {
-    console.log(JSON.stringify(response.data));
+
+    
+
+    const listID = response.data;
+
+    // SET CUSTOM FIELDS
+
     var fieldData = [];
     const fieldOptions = req.query.fieldOptions.split(",");
-    //console.log(fieldOptions)
+
     
-    console.log("THE BODY:", req.body);
-    
+
     for(var i = 0; i < fieldOptions.length; i++){
+      if(fieldOptions[i] in req.body.datatypes){
+        var datatype = req.body.datatypes[fieldOptions[i]];
+        console.log("THE NEW DATATYPE: ", datatype)
+      }else{
+        var datatype = "Text";
+      }
       fieldData.push({
         "FieldName": fieldOptions[i],
-        "DataType": "Text",
+        "DataType": datatype,
         "Options": [  ],
         "VisibleInPreferenceCenter": true
       })
     }
-    
-    
-    
-
-    
-    
+ 
     for(i = 0; i < fieldData.length; i++){
       var config = {
         method: 'post',
-        url: `https://api.createsend.com/api/v3.3/lists/${response.data}/customfields.json`,
+        url: `https://api.createsend.com/api/v3.3/lists/${listID}/customfields.json`,
         headers: { 
           "Authorization": "Basic " + Base64.encode(auth.apiKey), 
           "Content-Type": "application/json"
@@ -141,6 +127,30 @@ app.post('/create_list',  (req, res) => {
         console.log(error)
       })
     }
+    
+    // UPLOAD SUBSCRIBERS
+    //url: `https://api.createsend.com/api/v3.3/subscribers/${listID}/import.json`,
+    var config = {
+      method: 'post',
+      url: `https://api.createsend.com/api/v3.3/subscribers/${listID}/import.json`,
+      headers: { 
+        "Authorization": "Basic " + Base64.encode(auth.apiKey), 
+        "Content-Type": "application/json"
+      },
+      data : req.body.subscribers
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data))
+      })
+      .catch(function (error){
+        console.log(error)
+      })
+
+
+
+
     
     
     

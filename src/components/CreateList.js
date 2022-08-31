@@ -3,31 +3,36 @@ import {useDispatch, useSelector} from 'react-redux'
 import {addElement, deleteElement} from '../redux/fields.js'
 import {updateElement} from '../redux/datatypes.js'
 
-const CreateList = ({fieldOptions}) => {
+const CreateList = ({fieldOptions, parsedData}) => {
 
     const dispatch = useDispatch();
     const {fields} = useSelector(state => state.fields)
-    const {datatypes} = useSelector(state => state.datatypes)
+    //const {datatypes} = useSelector(state => state.datatypes)
 
-    //var dataTypes = {};
+    var datatypes = {};
+    var subscribers = { "Subscribers": [],
+                        "Resubscribe": true,
+                        "QueueSubscriptionBasedAutoResponders": false,
+                        "RestartSubscriptionBasedAutoresponders": true
+                };
     
    
     
     //const [selectedFields]
-
-    function handleChange(){
-        //if name is not in selectedFields, add it
-        //else, remove it
-        console.log()
-    }
     
     function createList(){
+        addSubscribers();
+        var body = {"datatypes": datatypes,
+                    "subscribers": subscribers
+            }
         console.log(typeof fields);
         const title = document.getElementById("list-name").value;
         fetch(`http://localhost:5000/create_list?fieldOptions=${fields}&title=${title}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datatypes)
+            headers: { "Content-Type": "application/json" }, 
+            body: JSON.stringify(body)
+                    
+                
         })
             .then((res) => {
                 if (res.ok){
@@ -39,22 +44,61 @@ const CreateList = ({fieldOptions}) => {
         console.log(fields)
     }
 
-    function checkCustomFields(){
-        console.log(fieldOptions.length);
-        for(let i = 0; i < fieldOptions.length; i++){
-            if(fieldOptions[i].toLowerCase() === "name" || fieldOptions[i].toLowerCase() === "email address"){
-                //document.getElementById(String(i)).checked = true;
-                if(document.getElementById(String(i))){
-                    console.log("I EXIST");
+    function addSubscribers(){
+        for(var i = 0; i < 20; i++){
+            var subscriber = {  "CustomFields": [],
+                            "ConsentToTrack": "Yes"
+                        };
+            for (const [key, value] of Object.entries(parsedData[i])) {
+                if(key.toLowerCase().includes("email address")){
+                    subscriber["EmailAddress"] = value;
+                }else if(key.toLowerCase().includes("name")){
+                    subscriber["Name"] = value;
                 }else{
-                    console.log("I DONT EXIST");
+                    if(fields.includes(key)){
+                        // make sure to remove spaces!
+                        var obj = {};
+                        obj["Key"] = key.replace(/\s/g, '');
+                        obj["Value"] = value;
+                        
+                        subscriber["CustomFields"].push(obj);
+                    }
                 }
-            }
+              }
+              subscribers["Subscribers"].push(subscriber);
         }
     }
-
     function test(){
-        console.log(datatypes)
+        
+        //var email = parsedData[0]["Email"]
+        
+        
+        for(var i = 0; i < 20; i++){
+            var subscriber = {  "CustomFields": [],
+                            "ConsentToTrack": "Yes"
+                        };
+            for (const [key, value] of Object.entries(parsedData[i])) {
+                if(key.toLowerCase().includes("email address")){
+                    subscriber["EmailAddress"] = value;
+                }else if(key.toLowerCase().includes("name")){
+                    subscriber["Name"] = value;
+                }else{
+                    if(fields.includes(key)){
+                        // make sure to remove spaces!
+                        var obj = {};
+                        obj["Key"] = key.replace(/\s/g, '');
+                        obj["Value"] = value;
+                        
+                        subscriber["CustomFields"].push(obj);
+                    }
+                }
+              }
+              subscribers["Subscribers"].push(subscriber);
+        }
+        
+          
+          
+          console.log(subscribers)
     }
 
     function test2(entry, data){
@@ -65,7 +109,7 @@ const CreateList = ({fieldOptions}) => {
     
     return (
         <div>
-            <div class="head">
+            <div className="head">
                 <h1>
                     List Field Names
                 </h1>
@@ -91,9 +135,11 @@ const CreateList = ({fieldOptions}) => {
                                             {rows.toLowerCase() === "name" || rows.toLowerCase() === "email address" ? <span style={{color: "#d4d4d4"}}>{rows}</span> : rows}
                                             {(rows.toLowerCase() !== "name" && rows.toLowerCase() !== "email address") && <div className='justify-content-right'>
                                                 <select id={String(rows) + "-type"} onChange={() =>{
+                                                    console.log("YOU CHANGED ME")
                                                     var e = document.getElementById(String(rows) + "-type");
                                                     var text = e.options[e.selectedIndex].text;
-                                                    test2(rows, text);
+                                                    datatypes[rows] = text;
+                                                    //test2(rows, text);
                                                     //dispatch(updateElement([rows, text]))
                                                 }}>
                                                     <option value='text'>Text</option>
@@ -106,7 +152,8 @@ const CreateList = ({fieldOptions}) => {
                                                 </select>
                                             </div>}
                                             {(rows.toLowerCase() !== "name" && rows.toLowerCase() !== "email address") && <script>
-                                                {test2(rows, "Text")}
+                                                {/*test2(rows, "Text")*/}
+                                                {datatypes[rows] = "Text"}
                                             </script>}
                                         </h3>
                                         

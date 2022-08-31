@@ -173,7 +173,7 @@ const FileUploadTest = () => {
                 {/*<button id='theid' onClick={createList} className='btn btn-primary btn-block mt-4'>Create List</button>*/}
                 </Col>
                 <Col>
-                    {viewed && <CreateList fieldOptions={tableRows}/>}
+                    {viewed && <CreateList fieldOptions={tableRows} parsedData={parsedData}/>}
                     {/*<CreateList />*/}
                 </Col>
             </Fragment>

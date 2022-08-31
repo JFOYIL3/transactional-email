@@ -12,7 +12,7 @@ export const datatypesSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes 
       state.datatypes[action.payload[0]] = action.payload[1];
-      console.log(state.datatypes)
+      
     }
     
   }

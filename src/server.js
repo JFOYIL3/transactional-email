@@ -12,8 +12,9 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.use(cors());
 app.use(fileUpload());
-app.use(bodyParser.urlencoded({extended : true}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true,
+                               limit: "200mb"}));
+app.use(bodyParser.json({limit: "200mb"}));
 
 
 // Upload endpoint
@@ -130,23 +131,49 @@ app.post('/create_list',  (req, res) => {
     
     // UPLOAD SUBSCRIBERS
     //url: `https://api.createsend.com/api/v3.3/subscribers/${listID}/import.json`,
-    var config = {
-      method: 'post',
-      url: `https://api.createsend.com/api/v3.3/subscribers/${listID}/import.json`,
-      headers: { 
-        "Authorization": "Basic " + Base64.encode(auth.apiKey), 
-        "Content-Type": "application/json"
-      },
-      data : req.body.subscribers
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data))
-      })
-      .catch(function (error){
-        console.log(error)
-      })
+    console.log(req.body.subscribers);
+    if(req.body.subscribers.length === 1){
+      console.log(`Creating One Batch`);
+      var config = {
+        method: 'post',
+        url: `https://api.createsend.com/api/v3.3/subscribers/${listID}/import.json`,
+        headers: { 
+          "Authorization": "Basic " + Base64.encode(auth.apiKey), 
+          "Content-Type": "application/json"
+        },
+        data : req.body.subscribers[0]
+      };
+  
+      axios(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data))
+        })
+        .catch(function (error){
+          console.log(error)
+        })
+    }else{
+      for(var j = 0; j < req.body.subscribers.length; j++){
+        console.log(`BATCH: ${j}`);
+        var config = {
+          method: 'post',
+          url: `https://api.createsend.com/api/v3.3/subscribers/${listID}/import.json`,
+          headers: { 
+            "Authorization": "Basic " + Base64.encode(auth.apiKey), 
+            "Content-Type": "application/json"
+          },
+          data : req.body.subscribers[j]
+        };
+    
+        axios(config)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data))
+          })
+          .catch(function (error){
+            console.log(error)
+          })
+      }
+    }
+    
 
 
 
